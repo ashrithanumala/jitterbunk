@@ -1,0 +1,22 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'bunk/styles.css' %}">
+<h1 style = "margin-bottom: 30px"> Main Page </h1>
+<div style = "display: flex; justify-content: space-between; padding: 80px">
+    <ul>
+        {% if bunk_list %}
+            {% for b in bunk_list %}
+                <li style = "margin-bottom: 80px">
+                    <img src = {{b.from_user.photo}} class = "profile-photo"/> 
+                    <a href="/bunk/{{ b.from_user.pk }}" style="color: black;">{{ b.from_user.username }}</a> bunked
+                    <img src = {{b.to_user.photo}} class = "profile-photo"/> 
+                    <a href="/bunk/{{ b.to_user.pk }}" style="color: black;">{{ b.to_user.username }}</a> at {{b.time}}
+                </li>
+            {% endfor %}
+
+        {% else %}
+            <p>Nobody's bunking nobody.</p>
+        {% endif %}
+    </ul>
+
+</div>

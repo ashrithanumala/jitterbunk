@@ -1,0 +1,52 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'bunk/styles.css' %}">
+
+<h1 style = "margin-bottom:60px">This is {{user.username}}'s bunk page, ID:{{userid}}</h1>
+
+<div style = "display: flex; justify-content: space-between">
+    <ul style="display: flex; flex-direction: column;">
+        {% for b in bunked_by_name_list %}
+            <li> 
+                <img src = {{user.photo}} class = "profile-photo"/>
+                <a href="/bunk/{{user.pk }}" style="color: black;">{{user.username }}</a> bunked 
+                <img src = {{b.to_user.photo}} class = "profile-photo"/>
+                <a href="/bunk/{{b.to_user.pk }}" style="color: black;">{{b.to_user.username }}</a>
+                at {{b.time}}
+            </li>
+        {% endfor %}
+        {% for b in name_bunked_by_list %}
+            <li> 
+                <img src = {{b.from_user.photo}} class = "profile-photo"/>
+                <a href="/bunk/{{b.from_user.pk }}" style="color: black;">{{b.from_user.username }}</a> bunked 
+                <img src = {{user.photo}} class = "profile-photo"/>
+                <a href="/bunk/{{user.pk }}" style="color: black;">{{user.username }}</a>
+                at {{b.time}}
+            </li>
+        {% endfor %}
+    <ul>
+</div>
+
+<br>
+
+
+<div style = "display: flex; padding: 20px margin-top: 80px">
+    <ul>
+        <form method="POST" action="{% url 'addbunk' %}">
+            {% csrf_token %}
+            <input type="hidden" name="from_user" value="{{ user.username }}">
+            <select name="to_user" id="bunk-options-dropdown" required>
+                <option disabled selected value="">Add new bunk</option>
+                {% for option in bunk_options %}
+                    <option value="{{ option.username }}">{{ option.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </ul>
+    <ul>
+        <a href="/bunk" style = "color: black"> To Main</a>
+    </ul>
+</div>
+
+
